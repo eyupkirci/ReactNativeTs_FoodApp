@@ -6,6 +6,9 @@ import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { HomeScreen } from './src/screens/HomeScreen';
 
+import {Provider} from 'react-redux'
+import {store} from './src/redux'
+
 import {useNavigation} from './src/utils'
 
 const switchNavigator = createSwitchNavigator({
@@ -80,7 +83,9 @@ const AppNavigation = createAppContainer(switchNavigator)
 
 const App = () => {
   return(
+    <Provider store={store}>
       <AppNavigation />
+    </Provider>
   )
 }
 

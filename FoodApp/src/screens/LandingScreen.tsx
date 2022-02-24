@@ -3,12 +3,19 @@ import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, Alert } fr
 import Geolocation from '@react-native-community/geolocation';
 import opencage from 'opencage-api-client';
 import { useNavigation } from '../utils';
+import {onUpdateLocation, UserState, ApplicationState} from '../redux'
+import { connect } from 'react-redux';
 
+
+interface LandingProps {
+  userReducer: UserState,
+  onUpdateLocation: Function
+}
 
 const screenWidth = Dimensions.get('screen').width
 
 
-export const LandingScreen = () => {
+export const _LandingScreen : React.FC<LandingProps> = ({userReducer, onUpdateLocation}) => {
 
   const { navigate } = useNavigation()
   const [lat, setLat] = useState<number>()
@@ -32,6 +39,7 @@ export const LandingScreen = () => {
 
   useEffect(() => {
     getDeviceLocation();
+    console.log('landingscreen')
   }, [])
 
 
@@ -40,9 +48,10 @@ export const LandingScreen = () => {
     const key = "294a08939e644c1594d61457f36b804b"
 
     opencage.geocode({ key, q: `${lat},${long}` }).then(response => {
+      console.log(response)
       setAddress(response.results[0].formatted)
-      // onUpdateLocation(response.results[0].formatted, response.results[0].components.postcode)
-      // console.log(response.results[0].components)
+      // address: response.results[0].formatted ; postcode:esponse.results[0].components.postcode
+      onUpdateLocation(response.results[0].formatted, response.results[0].components.postcode)
     })
 
     console.log(lat, long)
@@ -74,6 +83,13 @@ export const LandingScreen = () => {
   )
 }
 
+const mapToStateProps = (state: ApplicationState) => ({
+  userReducer: state.userReducer
+})
+
+const LandingScreen = connect(mapToStateProps, {onUpdateLocation})(_LandingScreen)
+
+export { LandingScreen }
 
 
 const styles = StyleSheet.create({
