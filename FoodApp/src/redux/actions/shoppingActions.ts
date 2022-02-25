@@ -1,17 +1,12 @@
 import axios from "axios";
 import { Dispatch } from "react";
 import { BASE_URL } from "../../utils";
-import { FoodAvailability, FoodModel } from "../models";
+import { FoodAvailability } from "../models";
 
 
 export interface AvailabilityAction {
     readonly type: "ON_AVAILABILITY",
     payload: FoodAvailability
-}
-
-export interface FoodSearchAction {
-    readonly type: "ON_FOOD_SEARCH",
-    payload: [FoodModel]
 }
 
 export interface ShoppingErrorAction {
@@ -20,7 +15,7 @@ export interface ShoppingErrorAction {
 }
 
 
-export type ShoppingAction = AvailabilityAction | ShoppingErrorAction | FoodSearchAction 
+export type ShoppingAction = AvailabilityAction | ShoppingErrorAction
 
 
 export const onAvailability = (postCode: string) => {
@@ -58,20 +53,11 @@ export const onSearchFoods = (postCode: string) => {
     return async (dispatch: Dispatch<ShoppingAction>) => {
 
         try {
-
-            const response = await axios.get<[FoodModel]>(`${BASE_URL}food/search/${postCode}`)
-
-            if(!response) {
-                dispatch({
+                           dispatch({
                     type: "ON_SHOPPING_ERROR",
                     payload: "Availability Error"
                 })
-            } else {
-                dispatch({
-                    type: "ON_FOOD_SEARCH",
-                    payload: response.data
-                })
-            }
+            
             
         } catch (error) {
             dispatch({

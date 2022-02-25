@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, Alert } fr
 import Geolocation from '@react-native-community/geolocation';
 import opencage from 'opencage-api-client';
 import { useNavigation } from '../utils';
+
 import {onUpdateLocation, UserState, ApplicationState} from '../redux'
 import { connect } from 'react-redux';
 
@@ -48,7 +49,7 @@ export const _LandingScreen : React.FC<LandingProps> = ({userReducer, onUpdateLo
     const key = "294a08939e644c1594d61457f36b804b"
 
     opencage.geocode({ key, q: `${lat},${long}` }).then(response => {
-      console.log(response)
+      // console.log(response)
       setAddress(response.results[0].formatted)
       // address: response.results[0].formatted ; postcode:esponse.results[0].components.postcode
       onUpdateLocation(response.results[0].formatted, response.results[0].components.postcode)
@@ -58,6 +59,7 @@ export const _LandingScreen : React.FC<LandingProps> = ({userReducer, onUpdateLo
 
     setTimeout(() => {
       navigate('homeStack')
+      console.log('homescreen')
     }, 2000)
   }
 

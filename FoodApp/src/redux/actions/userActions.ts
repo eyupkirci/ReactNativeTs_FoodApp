@@ -31,6 +31,8 @@ export const onUpdateLocation = (location: string, postcode: string) => {
                 payload: location,
                 postcode: postcode,
             })
+
+            console.log(location, postcode)
             
         } catch (error) {
             dispatch({

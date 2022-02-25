@@ -53,3 +53,8 @@ export interface UserState {
     error: string | undefined,
 
 }
+
+export interface ShoppingState{
+    availability: FoodAvailability,
+    
+}
