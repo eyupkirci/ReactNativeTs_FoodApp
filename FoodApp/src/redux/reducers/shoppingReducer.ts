@@ -15,7 +15,6 @@ const ShoppingReducer = (state: ShoppingState = initialState, action: ShoppingAc
                 ...state,
                 availability: action.payload
             }
-
     
         default:
             return state;

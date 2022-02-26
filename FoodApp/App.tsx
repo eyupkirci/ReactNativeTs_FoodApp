@@ -26,7 +26,12 @@ const switchNavigator = createSwitchNavigator({
 
     Home: {
       screen: createStackNavigator({
-        HomePage: HomeScreen,
+        HomePage: HomeScreen}
+        
+        ,{
+      defaultNavigationOptions: {
+        headerShown: false
+      }
     }),
       
       navigationOptions: {

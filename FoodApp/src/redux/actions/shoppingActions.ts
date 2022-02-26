@@ -18,42 +18,53 @@ export interface ShoppingErrorAction {
 export type ShoppingAction = AvailabilityAction | ShoppingErrorAction
 
 
-export const onAvailability = (postCode: string) => {
-
+export const onAvailability = (postcode: string) => {
     return async (dispatch: Dispatch<ShoppingAction>) => {
 
         try {
 
-            const response = await axios.get<FoodAvailability>(`${BASE_URL}food/availability/${postCode}`)
+            const response = await axios.get<FoodAvailability>(`${BASE_URL}food/availability/${postcode}`)
+            // const response = await axios.get<FoodAvailability>(`https://online-foods.herokuapp.com/food/availability/94104`)
+            // console.log('onavailability', response)
+
+
 
             if(!response) {
                 dispatch({
                     type: "ON_SHOPPING_ERROR",
                     payload: "Availability Error"
                 })
+
             } else {
                 dispatch({
                     type: "ON_AVAILABILITY",
                     payload: response.data
                 })
+                // console.log('onavailability', response.data)
+
             }
+
             
         } catch (error) {
             dispatch({
                 type: "ON_SHOPPING_ERROR",
                 payload: error
             })
+            // console.log('onavailability error')
+
         }
     }
+
+
 }
 
 
-export const onSearchFoods = (postCode: string) => {
+export const onSearchFoods = (postcode: string) => {
 
     return async (dispatch: Dispatch<ShoppingAction>) => {
 
         try {
-                           dispatch({
+            dispatch({
                     type: "ON_SHOPPING_ERROR",
                     payload: "Availability Error"
                 })
