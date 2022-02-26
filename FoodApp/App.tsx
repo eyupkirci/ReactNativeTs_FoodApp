@@ -10,6 +10,8 @@ import {Provider} from 'react-redux'
 import {store} from './src/redux'
 
 import {useNavigation} from './src/utils'
+import { RestaurantScreen } from './src/screens/RestaurantScreen';
+import { FoodDetailScreen } from './src/screens/FoodDetailScreen';
 
 const switchNavigator = createSwitchNavigator({
 
@@ -26,7 +28,10 @@ const switchNavigator = createSwitchNavigator({
 
     Home: {
       screen: createStackNavigator({
-        HomePage: HomeScreen}
+        HomePage: HomeScreen,
+        RestaurantPage: RestaurantScreen,
+        FoodDetailPage: FoodDetailScreen,
+      }
         
         ,{
       defaultNavigationOptions: {

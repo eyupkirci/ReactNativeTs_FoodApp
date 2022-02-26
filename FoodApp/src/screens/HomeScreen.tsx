@@ -6,7 +6,7 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '../utils';
 
 
-import { onUpdateLocation, UserState, ApplicationState, ShoppingState, onAvailability } from '../redux'
+import { onUpdateLocation, UserState, ApplicationState, ShoppingState, onAvailability, Restaurant, FoodModel } from '../redux'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -36,6 +36,13 @@ export const _HomeScreen: React.FC<HomeProps> = (props) => {
 
 
     }, [])
+
+    const onTopRestautrant = (item:Restaurant)=>{
+        navigate('RestaurantPage',{restaurant: item})
+    }
+    const onTopFood = (item:FoodModel)=>{
+        navigate('FoodDetailPage',{food: item})
+    }
 
     return (
 
@@ -76,7 +83,7 @@ export const _HomeScreen: React.FC<HomeProps> = (props) => {
                     horizontal
                     showsHorizontalScrollIndicator={false} 
                     data={restaurants} 
-                    renderItem={({item}) => <RestaurantCard item={item} onTap={() => {Alert.alert('Category Tapped')}} />} 
+                    renderItem={({item}) => <RestaurantCard item={item} onTap={onTopRestautrant} />} 
                     keyExtractor={(item) => `${item.id}`} />
             
             <Text style={{fontSize: 25,fontWeight: "800",color: "#f15b5d",marginLeft: 20}}>30 Min Foods</Text>
@@ -84,19 +91,12 @@ export const _HomeScreen: React.FC<HomeProps> = (props) => {
                     horizontal
                     showsHorizontalScrollIndicator={false} 
                     data={foods} 
-                    renderItem={({item}) => <RestaurantCard item={item} onTap={() => {Alert.alert('Category Tapped')}} />} 
+                    renderItem={({item}) => <RestaurantCard item={item} onTap={onTopFood} />} 
                     keyExtractor={(item) => `${item._id}`} />
             </ScrollView>
            
             </View>
 
-
-
-
-
-            <View style={styles.footer}>
-                <Text>footer</Text>
-            </View>
 
 
         </View>
