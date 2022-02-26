@@ -12,14 +12,16 @@
  
  // FoodModel
 
- export interface FoodModel{
-     _id: string;
-     name: string;
-     description: string;
-     price: number;
-     readyTime: number;
-     image: [string];
- }
+ export interface FoodModel {
+    _id: string,
+    name: string,
+    description: string,
+    category: string,
+    price: number,
+    readyTime: number,
+    images: [string],
+    unit: number
+}
 
  // Restaurant Model
 
