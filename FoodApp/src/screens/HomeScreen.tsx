@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, Alert, } from 'react-native';
-import { ButtonWithIcon, CategoryCard, SearchBar } from '../components'
+import { ButtonWithIcon, CategoryCard, SearchBar, RestaurantCard } from '../components'
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 import { useNavigation } from '../utils';
@@ -20,7 +20,7 @@ interface HomeProps {
 export const _HomeScreen: React.FC<HomeProps> = (props) => {
     // console.log('availibility',props.onAvailability)
     const { location, postcode } = props.userReducer
-    console.log('homescreen', postcode)
+    console.log('homescreen')
     const { availability } = props.shoppingReducer
     const { categories, foods, restaurants } = availability;
     // console.log(foods)
@@ -71,7 +71,19 @@ export const _HomeScreen: React.FC<HomeProps> = (props) => {
                     renderItem={({item}) => <CategoryCard item={item} onTap={() => {Alert.alert('Category Tapped')}} />} 
                     keyExtractor={(item) => `${item.id}`} />
             </ScrollView>
+           
+            <Text style={{fontSize: 25,fontWeight: "800",color: "#f15b5d",marginLeft: 20}}>Restaurants</Text>
+            <ScrollView>
+            <FlatList 
+                    horizontal
+                    showsHorizontalScrollIndicator={false} 
+                    data={restaurants} 
+                    renderItem={({item}) => <RestaurantCard item={item} onTap={() => {Alert.alert('Category Tapped')}} />} 
+                    keyExtractor={(item) => `${item.id}`} />
+            </ScrollView>
+           
             </View>
+
 
 
 

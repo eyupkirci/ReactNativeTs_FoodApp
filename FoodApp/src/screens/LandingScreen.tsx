@@ -59,7 +59,7 @@ export const _LandingScreen : React.FC<LandingProps> = ({userReducer, onUpdateLo
 
     setTimeout(() => {
       navigate('homeStack')
-      console.log('homescreen')
+      // console.log('homescreen navigation')
     }, 2000)
   }
 

@@ -4,6 +4,7 @@
  //category
 
  export interface Category{
+     _id:string,
      title: string;
      icon: string;
 
@@ -23,6 +24,7 @@
  // Restaurant Model
 
  export interface Restaurant{
+    images: any;
     _id: string;
     name: string;
     foodType: string;
