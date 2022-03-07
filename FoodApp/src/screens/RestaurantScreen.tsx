@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, FlatList } from 'react-native';
+import { connect } from 'react-redux';
 import { ButtonWithIcon, FoodCard } from '../components';
-import { FoodModel, Restaurant } from '../redux';
+import { ApplicationState, FoodModel, Restaurant } from '../redux';
 
 import {useNavigation} from '../utils'
 
@@ -14,7 +15,7 @@ interface RestaurantProps {
 
 
 
-const RestaurantScreen: React.FC<RestaurantProps> = (props) => {
+const _RestaurantScreen: React.FC<RestaurantProps> = (props) => {
 
     const { getParam, goBack } = props.navigation;
     const restaurant = getParam('restaurant') as Restaurant;
@@ -106,6 +107,12 @@ const styles = StyleSheet.create({
         flex: 0.5
     }
 })
+
+const mapStateToProps = (state: ApplicationState) => ({
+    shoppingReducer: state.shoppingReducer,
+})
+
+const RestaurantScreen = connect(mapStateToProps, {  })(_RestaurantScreen)
 
 
 export { RestaurantScreen }

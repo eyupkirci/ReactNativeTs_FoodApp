@@ -7,8 +7,7 @@
      _id:string,
      title: string;
      icon: string;
-
- }
+    }
  
  // FoodModel
 
@@ -20,7 +19,7 @@
     price: number,
     readyTime: number,
     images: [string],
-    unit: number
+    unit: number,
 }
 
  // Restaurant Model
@@ -60,5 +59,5 @@ export interface UserState {
 
 export interface ShoppingState{
     availability: FoodAvailability,
-    
-}
+    availableFoods: [FoodModel],
+    }

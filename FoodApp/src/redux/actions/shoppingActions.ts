@@ -1,12 +1,17 @@
 import axios from "axios";
 import { Dispatch } from "react";
 import { BASE_URL } from "../../utils";
-import { FoodAvailability } from "../models";
+import { FoodAvailability, FoodModel } from "../models";
 
 
 export interface AvailabilityAction {
     readonly type: "ON_AVAILABILITY",
     payload: FoodAvailability
+}
+
+export interface FoodSearchAction {
+    readonly type: "ON_FOODS_SEARCH",
+    payload: [FoodModel]
 }
 
 export interface ShoppingErrorAction {
@@ -15,7 +20,7 @@ export interface ShoppingErrorAction {
 }
 
 
-export type ShoppingAction = AvailabilityAction | ShoppingErrorAction
+export type ShoppingAction = AvailabilityAction | ShoppingErrorAction | FoodSearchAction
 
 
 export const onAvailability = (postcode: string) => {
@@ -46,11 +51,12 @@ export const onAvailability = (postcode: string) => {
 
             
         } catch (error) {
+
+            // save our location in local storage
             dispatch({
                 type: "ON_SHOPPING_ERROR",
                 payload: error
             })
-            // console.log('onavailability error')
 
         }
     }
@@ -58,17 +64,25 @@ export const onAvailability = (postcode: string) => {
 
 }
 
-
 export const onSearchFoods = (postcode: string) => {
 
     return async (dispatch: Dispatch<ShoppingAction>) => {
 
         try {
-            dispatch({
+
+            const response = await axios.get<[FoodModel]>(`${BASE_URL}food/search/${postcode}`)
+
+            if(!response) {
+                dispatch({
                     type: "ON_SHOPPING_ERROR",
                     payload: "Availability Error"
                 })
-            
+            } else {
+                dispatch({
+                    type: "ON_FOODS_SEARCH",
+                    payload: response.data
+                })
+            }
             
         } catch (error) {
             dispatch({

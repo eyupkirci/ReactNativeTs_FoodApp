@@ -6,7 +6,7 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '../utils';
 
 
-import { onUpdateLocation, UserState, ApplicationState, ShoppingState, onAvailability, Restaurant, FoodModel } from '../redux'
+import { onUpdateLocation, UserState, ApplicationState, ShoppingState, onAvailability, onSearchFoods, Restaurant, FoodModel } from '../redux'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -15,6 +15,7 @@ interface HomeProps {
     onAvailability: Function,
     shoppingReducer: ShoppingState,
     onUpdateLocation: Function,
+    onSearchFoods: Function,
 }
 
 export const _HomeScreen: React.FC<HomeProps> = (props) => {
@@ -23,16 +24,21 @@ export const _HomeScreen: React.FC<HomeProps> = (props) => {
     console.log('homescreen')
     const { availability } = props.shoppingReducer
     const { categories, foods, restaurants } = availability;
-    // console.log(foods)
     const locationFromStorage = AsyncStorage.getItem("user_location")
     const postcodeFromStorage = AsyncStorage.getItem("user_location_postcode")
-
+    
+    // console.log(foods)
     const { navigate } = useNavigation()
 
 
     useEffect(() => {
 
         props.onAvailability(postcode)
+
+        setTimeout(() => {
+            props.onSearchFoods(postcode)
+        })
+
 
 
     }, [])
@@ -111,7 +117,7 @@ const mapToStateProps = (state: ApplicationState) => ({
     shoppingReducer: state.shoppingReducer,
 })
 
-const HomeScreen = connect(mapToStateProps, { onAvailability})(_HomeScreen)
+const HomeScreen = connect(mapToStateProps, { onAvailability, onSearchFoods})(_HomeScreen)
 
 export { HomeScreen }
 

@@ -12,6 +12,7 @@ import {store} from './src/redux'
 import {useNavigation} from './src/utils'
 import { RestaurantScreen } from './src/screens/RestaurantScreen';
 import { FoodDetailsScreen } from './src/screens/FoodDetailsScreen';
+import { SearchScreen } from './src/screens/SearchScreen';
 
 const switchNavigator = createSwitchNavigator({
 
@@ -31,6 +32,7 @@ const switchNavigator = createSwitchNavigator({
         HomePage: HomeScreen,
         RestaurantPage: RestaurantScreen,
         FoodDetailPage: FoodDetailsScreen,
+        SearchPage:SearchScreen,
       }
         
         ,{
