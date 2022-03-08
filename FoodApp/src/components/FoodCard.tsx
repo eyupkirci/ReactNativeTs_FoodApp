@@ -4,16 +4,24 @@ import { FoodModel } from '../redux';
 import { ButtonAddRemove } from './ButtonAddRemove';
 
 interface FoodCardProps {
-    item: FoodModel,
-    onTap: Function,
+    item: FoodModel;
+    onTap: Function;
+    onUpdateCart: Function;
+    unit?:number | undefined;
 
 }
 
 
-const FoodCard: React.FC<FoodCardProps> = ({ item, onTap }) => {
+const FoodCard: React.FC<FoodCardProps> = ({ item, onTap, onUpdateCart,unit }) => {
 
 
+    const didUpdateCart = (unit: number) => {
 
+        item.unit = unit
+        onUpdateCart(item)
+
+
+    }
 
     return(
         <View style={styles.container}>
@@ -25,7 +33,23 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, onTap }) => {
                 </View>
                 <View style={styles.price_container} >
                     <Text style={styles.price_text} >{item.price} ₺</Text>
-                    <ButtonAddRemove onTap={()=>{}} />
+
+                    { unit !== undefined ?
+                        <Text style={styles.quantity_text} >Qty: {unit}</Text> :
+
+                        <ButtonAddRemove 
+                        onAdd={() => {
+                            let unit = isNaN(item.unit) ? 0 : item.unit
+                            didUpdateCart(unit + 1)
+                        }} 
+                        
+                        onRemove={() => {
+                            let unit = isNaN(item.unit) ? 0 : item.unit
+                            didUpdateCart(unit > 0 ? unit - 1 : unit)
+                        }}
+                        unit={item.unit}
+                        />
+                    }
                 </View>
             </TouchableOpacity>
         </View>

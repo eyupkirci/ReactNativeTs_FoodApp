@@ -1,11 +1,12 @@
 import {UserAction  } from '../actions'
-import { UserState, UserModel } from '../models'
+import { UserState, UserModel, FoodModel } from '../models'
 
 const initialState: UserState={
     user: {} as UserModel,
     location: '' as string,
     postcode: '' as string,
-    error:  undefined, 
+    error: undefined,
+    cart:{} as [FoodModel]
 
 }
 
@@ -19,6 +20,39 @@ const UserReducer = (state: UserState = initialState, action: UserAction) => {
                     location: action.payload,
                     postcode: action.postcode
                 }
+            case "ON_UPDATE_CART":
+            // console.log(state)
+            
+            if(!Array.isArray(state.cart)) {
+                return{
+                    ...state,
+                    cart: [action.payload]
+                }
+            }
+            
+            const existingFoods = state.cart.filter(item => item._id === action.payload._id)
+
+            if(existingFoods.length > 0) {
+
+                let updatedCart = state.cart.map((food) => {
+                    if(food._id === action.payload._id) {
+                        food.unit = action.payload.unit
+                    }
+
+                    return food
+                })
+
+                return {
+                    ...state,
+                    cart: updatedCart.filter(item => item.unit > 0)
+                }
+
+            } else {
+                return {
+                    ...state,
+                    cart: [...state.cart, action.payload]
+                }
+            }
             default:
                 return state
             

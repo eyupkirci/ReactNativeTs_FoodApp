@@ -20,6 +20,7 @@
     readyTime: number,
     images: [string],
     unit: number,
+     
 }
 
  // Restaurant Model
@@ -54,6 +55,7 @@ export interface UserState {
     location: string,
     postcode: string,
     error: string | undefined,
+    cart:[FoodModel]
 
 }
 

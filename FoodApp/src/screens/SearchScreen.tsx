@@ -3,14 +3,16 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimen
 import { connect } from 'react-redux';
 
 import { ButtonWithIcon, FoodCard, SearchBar } from '../components';
-import { ApplicationState, FoodModel, ShoppingState } from '../redux'
+import { ApplicationState, FoodModel, ShoppingState, onUpdateCart, UserState } from '../redux'
 
-import { useNavigation } from '../utils'
+import { checkExistence, useNavigation } from '../utils'
 
 
 interface SearchProps {
-    shoppingReducer: ShoppingState,
-    navigation: { getParam: Function, goBack: Function }
+    userReducer: UserState;
+    shoppingReducer: ShoppingState;
+    onUpdateCart: Function;
+    navigation: { getParam: Function, goBack: Function };
 }
 
 
@@ -24,6 +26,10 @@ const _SearchScreen: React.FC<SearchProps> = (props) => {
     const { availableFoods } = props.shoppingReducer;
     // console.log(availableFoods)
     const { getParam, goBack } = props.navigation;
+
+    const { cart } = props.userReducer;
+
+    console.log(props.userReducer);
 
     const onTapFood = (item: FoodModel) => {
         navigate('FoodDetailPage', {food: item})
@@ -58,8 +64,8 @@ const _SearchScreen: React.FC<SearchProps> = (props) => {
                             :
                             availableFoods
                     }
-                    renderItem={({ item }) => <FoodCard onTap={onTapFood} item={item} />}
-                    // keyExtractor={(item) => `${item._id}`}
+                    renderItem={({ item }) => <FoodCard onTap={onTapFood} item={checkExistence(item,cart)} onUpdateCart={props.onUpdateCart} />}
+                    keyExtractor={(item) => `${item._id}`}
                 />
             
             </View>
@@ -102,8 +108,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: ApplicationState) => ({
     shoppingReducer: state.shoppingReducer,
+    userReducer: state.userReducer
 })
 
-const SearchScreen = connect(mapStateToProps, {})(_SearchScreen)
+const SearchScreen = connect(mapStateToProps, {onUpdateCart})(_SearchScreen)
 
 export { SearchScreen }

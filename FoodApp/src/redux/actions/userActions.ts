@@ -2,6 +2,7 @@ import axios from "axios";
 import {Dispatch} from 'redux'
 import AsyncStorage from "@react-native-async-storage/async-storage"; 
 import { BASE_URL } from "../../utils";
+import { FoodModel } from "..";
 
 
 export interface UpdateLocationAction{
@@ -15,7 +16,13 @@ export interface UserErrorAction{
     payload: any,
 }
 
-export type UserAction= UpdateLocationAction|UserErrorAction
+export interface UpdateCartAction{
+    readonly type: "ON_UPDATE_CART",
+    payload: FoodModel,
+
+}
+
+export type UserAction= UpdateLocationAction|UserErrorAction|UpdateCartAction
 
 export const onUpdateLocation = (location: string, postcode: string) => {
 
@@ -40,6 +47,18 @@ export const onUpdateLocation = (location: string, postcode: string) => {
                 payload: error
             })
         }
+    }
+}
+
+export const onUpdateCart = (item: FoodModel) => {
+
+    return async (dispatch: Dispatch<UserAction>) => {
+
+        dispatch({
+            type: "ON_UPDATE_CART",
+            payload: item,
+        })
+        
     }
 }
 
