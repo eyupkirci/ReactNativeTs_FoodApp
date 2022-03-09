@@ -2,13 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { ButtonWithIcon, FoodCard } from '../components';
-import { ApplicationState, FoodModel, Restaurant } from '../redux';
+import { ApplicationState, FoodModel, Restaurant, UserState, onUpdateCart } from '../redux';
 
-import {useNavigation} from '../utils'
+import {checkExistence, useNavigation} from '../utils'
 
 
 
 interface RestaurantProps {
+    userReducer: UserState;
+    onUpdateCart: Function;
     // navigation: {}
     navigation: { getParam: Function, goBack: Function }
 }
@@ -19,7 +21,8 @@ const _RestaurantScreen: React.FC<RestaurantProps> = (props) => {
 
     const { getParam, goBack } = props.navigation;
     const restaurant = getParam('restaurant') as Restaurant;
-    console.log(restaurant)
+    // console.log(restaurant)
+
 
     const {navigate} = useNavigation()
 
@@ -27,6 +30,8 @@ const _RestaurantScreen: React.FC<RestaurantProps> = (props) => {
         navigate('FoodDetailPage', {food: item})
 
     }
+    const {cart} = props.userReducer
+
 
     return (
         <View style={styles.container}>
@@ -47,7 +52,7 @@ const _RestaurantScreen: React.FC<RestaurantProps> = (props) => {
                 <FlatList 
                  showsVerticalScrollIndicator={false} 
                  data={restaurant.foods}
-                 renderItem={({item}) => <FoodCard item={item} onTap={onTapFood} />} 
+                 renderItem={({item}) => <FoodCard item={checkExistence(item, cart)} onTap={() => {}} onUpdateCart={props.onUpdateCart} />} 
                  keyExtractor={(item) => `${item._id}`} />
 
 
@@ -110,9 +115,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: ApplicationState) => ({
     shoppingReducer: state.shoppingReducer,
+    userReducer: state.userReducer
 })
 
-const RestaurantScreen = connect(mapStateToProps, {  })(_RestaurantScreen)
+const RestaurantScreen = connect(mapStateToProps, { onUpdateCart })(_RestaurantScreen)
 
 
 export { RestaurantScreen }
