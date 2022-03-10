@@ -29,6 +29,8 @@ const _CartScreen: React.FC<CartProps> = (props) => {
 
     const { cart } = props.userReducer;
 
+    const onPressCart = () => { navigate('HomePage') }
+
 
     const onTapFood = (item: FoodModel) => {
         navigate('FoodDetailPage', { food: item })
@@ -69,9 +71,9 @@ const _CartScreen: React.FC<CartProps> = (props) => {
 
             </View>
 
-            <View style={{ flex: 1, alignItems:'center', flexDirection: 'row',justifyContent:'center'}}>
-                <Text style={{ padding:10,}}>Total</Text>
-                <Text>{totalAmount}</Text>
+            <View style={styles.footer_total_amount}>
+                <Text style={{ padding:10, fontSize:28, fontWeight:'500' }}>Total</Text>
+                <Text style={{ padding:10, fontSize:28, fontWeight:'700' }}>{totalAmount} ₺</Text>
             </View>
         </View>)
 
@@ -79,8 +81,17 @@ const _CartScreen: React.FC<CartProps> = (props) => {
     } else {
 
         return (
-            <View>
-                <Text>No Food in Cart</Text>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems:'center', marginTop:300 }}>
+                <View style={{ flex: 1}}>
+                <Text style={{fontSize: 28, fontWeight: '500' }}>No Food in Cart</Text>
+
+                </View>
+                <View style={{ flex: 1}}>
+                <TouchableOpacity style={{alignItems: "center", borderRadius:5 , backgroundColor: "#DDDDDD",padding: 10, height:40}} onPress={onPressCart}>
+                    <Text style={{ flex: 1, color: "orange", fontSize: 14}}> Go to Homescreen </Text>
+                     </TouchableOpacity>
+
+                </View>
             </View>)
 
     }
@@ -115,6 +126,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "#F2F2F2"
     },
+    footer_total_amount: {
+        flex: 1,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 10,
+        justifyContent: "space-around",
+        paddingLeft: 10,
+        paddingRight: 10,
+    }
 
 
 })
