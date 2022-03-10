@@ -37,6 +37,8 @@ const _CartScreen: React.FC<CartProps> = (props) => {
 
     }
 
+    const onValidateOrder=()=> {navigate('LoginPage')}
+
     const [totalAmount, setTotalAmount] = useState(0)
 
     const onAmountChange = () => {
@@ -76,11 +78,11 @@ const _CartScreen: React.FC<CartProps> = (props) => {
 
             <View style={styles.footer}>
                 <View style={styles.amount_container}>
-                <Text style={{ fontSize:28, fontWeight:'500' }}>Total</Text>
-                <Text style={{ fontSize:28, fontWeight:'700' }}>{totalAmount} ₺</Text>
+                <Text style={{ fontSize:18, fontWeight:'700' }}>Total</Text>
+                <Text style={{ fontSize:18, fontWeight:'700' }}>{totalAmount} ₺</Text>
 
                 </View >
-                    <ButtonWithTitle title='Order Now' onTap={() => {}} width={300} height={50}></ButtonWithTitle>
+                    <ButtonWithTitle title='Order Now' onTap={onValidateOrder} width={300} height={50}></ButtonWithTitle>
             </View>
         </View>)
 
