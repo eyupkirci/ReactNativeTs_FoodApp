@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
-import { ButtonWithIcon, FoodCard, SearchBar } from '../components';
+import { ButtonWithIcon, ButtonWithTitle, FoodCard, SearchBar } from '../components';
 import { ApplicationState, FoodModel, ShoppingState, onUpdateCart, UserState } from '../redux'
 
 import { checkExistence, useNavigation } from '../utils'
@@ -42,12 +42,15 @@ const _CartScreen: React.FC<CartProps> = (props) => {
     const onAmountChange = () => {
         let total = 0;
 
-            cart.map(item=> {
+        if (Array.isArray(cart)) {
+
+            cart.map(item => {
                 total += item.price * item.unit;
             })
-            console.log('onAmountChange', total);
+            // console.log('onAmountChange', total);
         
-        setTotalAmount(total)
+            setTotalAmount(total)
+        }
     }
 
     useEffect(() => {
@@ -71,9 +74,13 @@ const _CartScreen: React.FC<CartProps> = (props) => {
 
             </View>
 
-            <View style={styles.footer_total_amount}>
-                <Text style={{ padding:10, fontSize:28, fontWeight:'500' }}>Total</Text>
-                <Text style={{ padding:10, fontSize:28, fontWeight:'700' }}>{totalAmount} ₺</Text>
+            <View style={styles.footer}>
+                <View style={styles.amount_container}>
+                <Text style={{ fontSize:28, fontWeight:'500' }}>Total</Text>
+                <Text style={{ fontSize:28, fontWeight:'700' }}>{totalAmount} ₺</Text>
+
+                </View >
+                    <ButtonWithTitle title='Order Now' onTap={() => {}} width={300} height={50}></ButtonWithTitle>
             </View>
         </View>)
 
@@ -89,7 +96,7 @@ const _CartScreen: React.FC<CartProps> = (props) => {
                 <View style={{ flex: 1}}>
                 <TouchableOpacity style={{alignItems: "center", borderRadius:5 , backgroundColor: "#DDDDDD",padding: 10, height:40}} onPress={onPressCart}>
                     <Text style={{ flex: 1, color: "orange", fontSize: 14}}> Go to Homescreen </Text>
-                     </TouchableOpacity>
+                </TouchableOpacity>
 
                 </View>
             </View>)
@@ -120,11 +127,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "#F2F2F2"
     },
+    // footer: {
+    //     fontSize: 1,
+    //     alignItems: "center",
+    //     justifyContent: 'center',
+    //     backgroundColor: "#F2F2F2"
+    // },
     footer: {
-        fontSize: 1,
-        alignItems: "center",
-        justifyContent: 'center',
-        backgroundColor: "#F2F2F2"
+        flex: 2,
+        padding: 10,
     },
     footer_total_amount: {
         flex: 1,
@@ -135,10 +146,19 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         paddingLeft: 10,
         paddingRight: 10,
-    }
+    },
+    amount_container: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingRight: 20,
+        paddingLeft: 20
+    },
 
 
 })
+
+
 
 
 const mapStateToProps = (state: ApplicationState) => ({
