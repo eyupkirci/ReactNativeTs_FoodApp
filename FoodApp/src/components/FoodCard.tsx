@@ -7,7 +7,7 @@ interface FoodCardProps {
     item: FoodModel;
     onTap: Function;
     onUpdateCart: Function;
-    unit?:number | undefined;
+    unit?: number | undefined;
 
 }
 

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions,FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
 import { ButtonWithIcon, FoodCard, SearchBar } from '../components';
@@ -17,8 +17,8 @@ interface CartProps {
 
 
 const _CartScreen: React.FC<CartProps> = (props) => {
-    
-    const {navigate}= useNavigation()
+
+    const { navigate } = useNavigation()
 
     const [isEditing, setIsEditing] = useState(false)
     const [keyword, setKeyword] = useState('')
@@ -29,40 +29,62 @@ const _CartScreen: React.FC<CartProps> = (props) => {
 
     const { cart } = props.userReducer;
 
-    console.log(props.userReducer);
 
     const onTapFood = (item: FoodModel) => {
-        navigate('FoodDetailPage', {food: item})
+        navigate('FoodDetailPage', { food: item })
 
     }
 
+    const [totalAmount, setTotalAmount] = useState(0)
 
-    return (
-        <View style={styles.container}>
+    const onAmountChange = () => {
+        let total = 0;
 
-            <View style={styles.navigation}>
-                {/* <ButtonWithIcon icon={require('../images/back_arrow.png')} onTap={() => goBack()} width={50} height={50} />
-                <SearchBar onTextChange={setKeyword} onEndEditing={() => setIsEditing(false)} didTouch={() => setIsEditing(true)} />
-                console.log(keyword) */}
+            cart.map(item=> {
+                total += item.price * item.unit;
+            })
+            console.log('onAmountChange', total);
+        
+        setTotalAmount(total)
+    }
+
+    useEffect(() => {
+        onAmountChange();
+    }, [cart])
 
 
-            </View>
-
+    if (cart.length > 0) {
+        return (<View style={styles.container}>
 
             {/* Foods coming from redux under availableFoods props*/}
 
             <View style={styles.body}>
-                
+
                 <FlatList
                     showsHorizontalScrollIndicator={false}
                     data={cart}
-                    renderItem={({ item }) => <FoodCard onTap={onTapFood} item={checkExistence(item,cart)} onUpdateCart={props.onUpdateCart} />}
+                    renderItem={({ item }) => <FoodCard onTap={onTapFood} item={checkExistence(item, cart)} onUpdateCart={props.onUpdateCart} />}
                     keyExtractor={(item) => `${item._id}`}
                 />
-            
+
             </View>
-        </View>
-    )
+
+            <View style={{ flex: 1, alignItems:'center', flexDirection: 'row',justifyContent:'center'}}>
+                <Text style={{ padding:10,}}>Total</Text>
+                <Text>{totalAmount}</Text>
+            </View>
+        </View>)
+
+
+    } else {
+
+        return (
+            <View>
+                <Text>No Food in Cart</Text>
+            </View>)
+
+    }
+
 }
 
 
@@ -103,6 +125,6 @@ const mapStateToProps = (state: ApplicationState) => ({
     userReducer: state.userReducer
 })
 
-const CartScreen = connect(mapStateToProps, {onUpdateCart})(_CartScreen)
+const CartScreen = connect(mapStateToProps, { onUpdateCart })(_CartScreen)
 
 export { CartScreen }
