@@ -83,7 +83,6 @@ const switchNavigator = createSwitchNavigator({
 
     Account: {
       screen: createStackNavigator({
-        HomePage: HomeScreen,
         LoginPage: LoginScreen,
 
     }),

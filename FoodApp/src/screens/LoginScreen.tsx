@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions } from 'react-native';
+import { TextField } from '../components/TextField';
 
 
-interface LoginProps { }
+interface LoginProps {
+placeholder: string
+}
 
 
 
@@ -11,6 +14,8 @@ const LoginScreen: React.FC<LoginProps> = () => {
 
     return (
         <View style={styles.container}>
+
+            <TextField placeholder='Login'/>
 
         </View>
     )
