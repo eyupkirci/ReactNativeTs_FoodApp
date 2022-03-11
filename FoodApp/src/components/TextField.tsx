@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput } from 'react-native';
 
 interface TextFieldProps {
     placeholder: string,
-    isSecure?: boolean,
+    isSecure?: boolean, // ? is used for optional properties
     // onTextChange: Function,
 }
 
