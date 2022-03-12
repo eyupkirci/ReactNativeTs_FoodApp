@@ -13,18 +13,19 @@ const initialState: UserState={
 const UserReducer = (state: UserState = initialState, action: UserAction) => {
 
 
-        switch (action.type) {
-            case "ON_UPDATE_LOCATION":
-                return {
-                    ...state,
-                    location: action.payload,
-                    postcode: action.postcode
-                }
-            case "ON_UPDATE_CART":
+    switch (action.type) {
+        case "ON_UPDATE_LOCATION":
+            return {
+                ...state,
+                location: action.payload,
+                postcode: action.postcode
+            };
+            
+        case "ON_UPDATE_CART":
             // console.log(state)
             
-            if(!Array.isArray(state.cart)) {
-                return{
+            if (!Array.isArray(state.cart)) {
+                return {
                     ...state,
                     cart: [action.payload]
                 }
@@ -32,10 +33,10 @@ const UserReducer = (state: UserState = initialState, action: UserAction) => {
             
             const existingFoods = state.cart.filter(item => item._id === action.payload._id)
 
-            if(existingFoods.length > 0) {
+            if (existingFoods.length > 0) {
 
                 let updatedCart = state.cart.map((food) => {
-                    if(food._id === action.payload._id) {
+                    if (food._id === action.payload._id) {
                         food.unit = action.payload.unit
                     }
 
@@ -52,18 +53,17 @@ const UserReducer = (state: UserState = initialState, action: UserAction) => {
                     ...state,
                     cart: [...state.cart, action.payload]
                 }
-            }
+            };
                 
-            case 'ON_USER_LOGIN':
-                console.log('User login')
-                console.log(action.payload)
-                return state
+        case 'ON_USER_LOGIN':
+            return {
+                ...state,
+                user: action.payload
+            };
             
-            default:
-                return state
-            
-            }
-    
-}
+        default:
+            return state;
+    }
+};
 
 export {UserReducer}

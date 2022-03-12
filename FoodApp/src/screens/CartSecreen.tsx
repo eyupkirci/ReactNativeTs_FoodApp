@@ -24,20 +24,17 @@ const _CartScreen: React.FC<CartProps> = (props) => {
     const [keyword, setKeyword] = useState('')
 
     const { availableFoods } = props.shoppingReducer;
-    // console.log(availableFoods)
     const { getParam, goBack } = props.navigation;
 
-    const { cart } = props.userReducer;
+    const { cart, user } = props.userReducer;
 
-    const onPressCart = () => { navigate('HomePage') }
+    // const onPressCart = () => {navigate('HomePage') }
 
 
     const onTapFood = (item: FoodModel) => {
         navigate('FoodDetailPage', { food: item })
 
     }
-
-    const onValidateOrder=()=> {navigate('LoginPage')}
 
     const [totalAmount, setTotalAmount] = useState(0)
 
@@ -58,6 +55,18 @@ const _CartScreen: React.FC<CartProps> = (props) => {
     useEffect(() => {
         onAmountChange();
     }, [cart])
+
+    const onValidateOrder = () => {
+
+        if (!user.verified) {
+            navigate('LoginPage')
+         }
+        else {
+            //place the order
+            console.log('Now we can order')
+        }
+
+    }
 
 
     if (cart.length > 0) {
@@ -95,12 +104,12 @@ const _CartScreen: React.FC<CartProps> = (props) => {
                 <Text style={{fontSize: 28, fontWeight: '500' }}>No Food in Cart</Text>
 
                 </View>
-                <View style={{ flex: 1}}>
+                {/* <View style={{ flex: 1}}>
                 <TouchableOpacity style={{alignItems: "center", borderRadius:5 , backgroundColor: "#DDDDDD",padding: 10, height:40}} onPress={onPressCart}>
                     <Text style={{ flex: 1, color: "orange", fontSize: 14}}> Go to Homescreen </Text>
                 </TouchableOpacity>
 
-                </View>
+                </View> */}
             </View>)
 
     }

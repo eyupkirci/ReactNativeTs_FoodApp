@@ -40,7 +40,7 @@ export const _LandingScreen : React.FC<LandingProps> = ({userReducer, onUpdateLo
 
   useEffect(() => {
     getDeviceLocation();
-    console.log('landingscreen')
+    // console.log('landingscreen')
   }, [])
 
 

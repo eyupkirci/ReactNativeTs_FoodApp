@@ -43,10 +43,12 @@
  }
 
  export interface UserModel {
-    firstName: string,
-    lastName: string,
-    contactNumber: string,
-    token: string,
+    // firstName: string,
+    // lastName: string,
+    // contactNumber: string,
+     email: string,
+     token: string,
+     verified:boolean,
 
 }
 

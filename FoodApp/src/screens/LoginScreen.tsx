@@ -24,40 +24,44 @@ const _LoginScreen: React.FC<LoginProps> = ({ onUserLogin, onUserSignup, userRed
 
     const onTapOptions = () => {
         setIsSignup(!isSignup);
-        setTitle(!isSignup? 'Signup':'Login')
-    }
+        setTitle(!isSignup ? 'Signup' : 'Login')
+    };
+
+    const user = userReducer.user;
+    console.log(user)
 
     const onTapAuthenticate = () => {
-        if (isSignup) {    
+        if (isSignup) {
+            console.log('onTopAuthenticate called Login')
             onUserSignup(email, phone, password);
         } else {
+            console.log('onTopAuthenticate called Signup')
             onUserLogin(email, password);
         }
-    }
+    };
     
     return (
         <View style={styles.container}>
             <View style={styles.navigation}>
-                <Text style={{fontSize:30}}>Login</Text>
+                <Text style={{ fontSize: 30 }}>Login</Text>
             </View>
             <View style={styles.body}>
             
                 {/* Inputs */}
                 <TextField placeholder='Email' onTextChange={setEmail} />
-                {isSignup&& <TextField placeholder='Phone' onTextChange={setPhone}/>}
+                {isSignup && <TextField placeholder='Phone' onTextChange={setPhone} />}
                 <TextField placeholder='Password' onTextChange={setPassword} isSecure={true} />
             
                 {/* Buttons */}
                 <ButtonWithTitle title={title} onTap={onTapAuthenticate} width={350} height={50} />
-                <ButtonWithTitle title={isSignup ? 'No Account? Signup Here' : 'Have an Account? Login Here'} onTap={() => onTapOptions()} width={350} height={50} isNoBg={true}/>
+                <ButtonWithTitle title={!isSignup ? 'No Account? Signup Here' : 'Have an Account? Login Here'} onTap={onTapOptions} width={350} height={50} isNoBg={true} />
             </View>
 
             <View style={styles.footer}></View>
             
         </View>
     )
-}
-
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -77,8 +81,6 @@ const styles = StyleSheet.create({
     footer: {
         flex: 1,
     },
-
-
 })
 
 

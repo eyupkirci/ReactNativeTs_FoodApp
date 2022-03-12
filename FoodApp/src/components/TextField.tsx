@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         marginRight: 30,
         paddingRight: 10,
         paddingLeft: 20,
-        borderWidth: 1,
+        // borderWidth: 1,
         borderColor: "#f14b5d"
     },
     textField: {

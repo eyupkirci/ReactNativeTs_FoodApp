@@ -28,8 +28,6 @@ export interface UserLoginAction{
 
 }
 
-
-
 export type UserAction= UpdateLocationAction|UserErrorAction|UpdateCartAction|UserLoginAction
 
 export const onUpdateLocation = (location: string, postcode: string) => {
@@ -77,8 +75,6 @@ export const onUserLogin = (email: string, password: string) => {
         try {
             
             const response = await axios.post<UserModel>(`${BASE_URL}user/login`, { email, password });
-            
-            // console.log(response.data)
 
             if (!response) {
                 dispatch({
@@ -101,7 +97,6 @@ export const onUserLogin = (email: string, password: string) => {
         }
     }
 }
-
 
 export const onUserSignup = (email: string, phone: string, password: string) => {
     
@@ -127,7 +122,7 @@ export const onUserSignup = (email: string, phone: string, password: string) => 
                     type: 'ON_USER_LOGIN',
                     payload: response.data
                 });
-                // console.log('on user login successful',response.data)
+                console.log('///// userlogin successful ////',response.data)
             }
         
         } catch (error) {
