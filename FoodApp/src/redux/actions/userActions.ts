@@ -2,7 +2,7 @@ import axios from "axios";
 import {Dispatch} from 'redux'
 import AsyncStorage from "@react-native-async-storage/async-storage"; 
 import { BASE_URL } from "../../utils";
-import { FoodModel } from "..";
+import { FoodModel, UserModel } from "..";
 
 
 export interface UpdateLocationAction{
@@ -22,7 +22,15 @@ export interface UpdateCartAction{
 
 }
 
-export type UserAction= UpdateLocationAction|UserErrorAction|UpdateCartAction
+export interface UserLoginAction{
+    readonly type: "ON_USER_LOGIN",
+    payload: UserModel,
+
+}
+
+
+
+export type UserAction= UpdateLocationAction|UserErrorAction|UpdateCartAction|UserLoginAction
 
 export const onUpdateLocation = (location: string, postcode: string) => {
 
@@ -62,3 +70,71 @@ export const onUpdateCart = (item: FoodModel) => {
     }
 }
 
+export const onUserLogin = (email: string, password: string) => {
+
+    return async (dispatch: Dispatch<UserAction>) => {
+
+        try {
+            
+            const response = await axios.post<UserModel>(`${BASE_URL}user/login`, { email, password });
+            
+            // console.log(response.data)
+
+            if (!response) {
+                dispatch({
+                    type: "ON_USER_ERROR",
+                    payload: "User Login Error"
+                })
+            } else {
+                dispatch({
+                    type: "ON_USER_LOGIN",
+                    payload: response.data
+                })
+            }
+            
+        } catch (error) {
+            dispatch({
+                type: "ON_USER_ERROR",
+                payload: error
+            })
+        
+        }
+    }
+}
+
+
+export const onUserSignup = (email: string, phone: string, password: string) => {
+    
+    return async (dispatch: Dispatch<UserAction>) => {
+             
+        try {
+
+            const response = await axios.post<UserModel>(`${BASE_URL}user/signup`, {
+                email,
+                phone,
+                password
+            })
+            
+            console.log(response)
+
+            if(!response) {
+                dispatch({
+                    type: 'ON_USER_ERROR',
+                    payload: "User Login Error"
+                })
+            } else{
+                dispatch({
+                    type: 'ON_USER_LOGIN',
+                    payload: response.data
+                });
+                // console.log('on user login successful',response.data)
+            }
+        
+        } catch (error) {
+            dispatch({
+                type: "ON_USER_ERROR",
+                payload: error
+            })
+        }
+    }
+}

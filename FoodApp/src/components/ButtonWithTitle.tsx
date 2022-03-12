@@ -7,7 +7,7 @@ interface ButtonProps {
     height: number,
     title: string,
     isNoBg?: boolean,
-    disable?: boolean
+    disable?: boolean,
 }
 
 const ButtonWithTitle: React.FC<ButtonProps> = ({ onTap, width, height, title, isNoBg = false, disable = false }) => {
