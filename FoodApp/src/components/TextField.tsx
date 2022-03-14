@@ -5,20 +5,43 @@ interface TextFieldProps {
     placeholder: string;
     isSecure?: boolean; // ? is used for optional properties
     onTextChange: Function;
+    isOTP?: boolean;
 }
 
 
-export const TextField: React.FC<TextFieldProps> = ({placeholder, isSecure = false, onTextChange}) => {
+export const TextField: React.FC<TextFieldProps> = ({placeholder, isSecure = false, onTextChange, isOTP=false}) => {
 
 
-    return (<View style={styles.container}>
-        <TextInput
-            placeholder={placeholder}
-            autoCapitalize='none'
-            secureTextEntry={isSecure}
-            onChangeText={(text) => onTextChange(text)}
-            style={styles.textField} />
-        </View>);    
+    if(isOTP) {
+
+        return(
+            <View style={styles.container} >
+                <TextInput 
+                placeholder={placeholder}
+                maxLength={6}
+                autoCapitalize='none'
+                secureTextEntry={true}
+                showSoftInputOnFocus={false}
+                keyboardType='numeric'
+                onChangeText={(text) => onTextChange(text)}
+                style={styles.otpTextField} />
+            </View>
+        )
+    } else {
+
+        return(
+            <View style={styles.container} >
+                <TextInput 
+                placeholder={placeholder}
+                autoCapitalize='none'
+                secureTextEntry={isSecure}
+                showSoftInputOnFocus={false}
+                keyboardType='numeric'
+                onChangeText={(text) => onTextChange(text)}
+                style={styles.textField} />
+            </View>
+        )
+    }   
 }
 
 const styles = StyleSheet.create({

@@ -104,7 +104,7 @@ export const onUserSignup = (email: string, phone: string, password: string) => 
              
         try {
 
-            const response = await axios.post<UserModel>(`${BASE_URL}user/signup`, {
+            const response = await axios.post<UserModel>(`${BASE_URL}user/create-account`, {
                 email,
                 phone,
                 password
@@ -126,6 +126,76 @@ export const onUserSignup = (email: string, phone: string, password: string) => 
             }
         
         } catch (error) {
+            dispatch({
+                type: "ON_USER_ERROR",
+                payload: error
+            })
+        }
+    }
+}
+
+
+export const onVerifyOTP = (otp: string, user: UserModel) => {
+
+    return async (dispatch: Dispatch<UserAction>) => {
+
+        try {
+
+            axios.defaults.headers.common['Authorization']=`Bearer ${user.token}`
+
+            const response = await axios.patch<UserModel>(`${BASE_URL}user/verify`, { otp });
+
+            console.log(response.data)
+
+            if(!response) {
+                dispatch({
+                    type: "ON_USER_ERROR",
+                    payload: "User Verification Error"
+                })
+            } else {
+                dispatch({
+                    type: "ON_USER_LOGIN",
+                    payload: response.data
+                });
+                console.log(response.data)
+            }
+            
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: "ON_USER_ERROR",
+                payload: error
+            })
+        }
+    }
+}
+
+
+export const onOTPRequest = (user: UserModel) => {
+
+    return async (dispatch: Dispatch<UserAction>) => {
+
+        try {
+
+            axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`
+
+            const response = await axios.get<UserModel>(`${BASE_URL}user/otp`)
+            console.log(response)
+
+            if(!response) {
+                dispatch({
+                    type: "ON_USER_ERROR",
+                    payload: "User Verification Error"
+                })
+            } else {
+                dispatch({
+                    type: "ON_USER_LOGIN",
+                    payload: response.data
+                })
+            }
+            
+        } catch (error) {
+            console.log(error);
             dispatch({
                 type: "ON_USER_ERROR",
                 payload: error
