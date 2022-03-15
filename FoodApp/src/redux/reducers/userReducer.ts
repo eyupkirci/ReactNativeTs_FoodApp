@@ -1,12 +1,13 @@
 import {UserAction  } from '../actions'
-import { UserState, UserModel, FoodModel } from '../models'
+import { UserState, UserModel, FoodModel, OrderModel } from '../models'
 
 const initialState: UserState={
     user: {} as UserModel,
     location: '' as string,
     postcode: '' as string,
     error: undefined,
-    cart:{} as [FoodModel]
+    cart: {} as [FoodModel],
+    orders: {} as [OrderModel]
 
 }
 
@@ -60,6 +61,22 @@ const UserReducer = (state: UserState = initialState, action: UserAction) => {
                 ...state,
                 user: action.payload
             };
+        
+        case 'ON_CREATE_ORDER':
+            if (Array.isArray(state.orders)) {
+                return {
+                    state,
+                    cart: [],
+                    orders:[action.payload]
+                }
+            } else {
+                return {
+                    state,
+                    cart: [],
+                    orders:[...state.orders, action.payload]
+                }
+            }
+            
             
         default:
             return state;

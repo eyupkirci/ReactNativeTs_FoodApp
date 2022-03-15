@@ -2,7 +2,7 @@ import axios from "axios";
 import {Dispatch} from 'redux'
 import AsyncStorage from "@react-native-async-storage/async-storage"; 
 import { BASE_URL } from "../../utils";
-import { FoodModel, UserModel } from "..";
+import { FoodModel, UserModel, OrderModel } from "..";
 
 
 export interface UpdateLocationAction{
@@ -28,7 +28,18 @@ export interface UserLoginAction{
 
 }
 
-export type UserAction= UpdateLocationAction|UserErrorAction|UpdateCartAction|UserLoginAction
+export interface CreateOrderAction {
+    readonly type: "ON_CREATE_ORDER",
+    payload: OrderModel
+}
+
+
+export type UserAction =
+    UpdateLocationAction |
+    UserErrorAction |
+    UpdateCartAction |
+    UserLoginAction |
+    CreateOrderAction;
 
 export const onUpdateLocation = (location: string, postcode: string) => {
 
@@ -180,7 +191,6 @@ export const onOTPRequest = (user: UserModel) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`
 
             const response = await axios.get<UserModel>(`${BASE_URL}user/otp`)
-            console.log(response)
 
             if(!response) {
                 dispatch({
@@ -203,3 +213,43 @@ export const onOTPRequest = (user: UserModel) => {
         }
     }
 }
+
+export const onCreateOrder = (cartItems: [FoodModel], user: UserModel) => {
+
+    let cart = new Array()
+
+    cartItems.map(item => {
+        cart.push({_id: item._id, unit: item.unit})
+    })
+
+    
+    return async (dispatch: Dispatch<UserAction>) => {
+
+        try {
+
+            axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`
+
+            const response = await axios.post<OrderModel>(`${BASE_URL}user/create-order`, {cart})
+            console.log(response.data)
+
+            if (!response) {
+                dispatch({
+                    type: "ON_USER_ERROR",
+                    payload: "User Verification Error"
+                })
+            } else {
+                dispatch({
+                    type: "ON_CREATE_ORDER",
+                    payload: response.data
+                })
+            }
+            
+        } catch (error) {
+            dispatch({
+                type: "ON_USER_ERROR",
+                payload: error
+            })
+        }
+    }
+}
+
